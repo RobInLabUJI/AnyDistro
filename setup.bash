@@ -9,7 +9,7 @@ if [ "$COUNT" -eq 0 ]; then
     rocker --nvidia --x11 --user --home --nocleanup \
       --image-name $IMAGE_NAME \
       --name $CONTAINER_NAME \
-      osrf/ros:$DISTRO-desktop-full
+      osrf/ros:$TAG
   else
     docker run -it -v /home/$USER:/home/$USER  --name $CONTAINER_NAME  \
       --gpus all -e DISPLAY -e TERM -e QT_X11_NO_MITSHM=1 \
