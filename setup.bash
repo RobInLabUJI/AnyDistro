@@ -1,4 +1,5 @@
 IMAGE_NAME=ros-$DISTRO
+TAG=$DISTRO-desktop-full
 CONTAINER_NAME=$IMAGE_NAME
 COUNT=$(docker ps | grep "$CONTAINER_NAME" | wc -l)
 
