@@ -1,4 +1,4 @@
-# ros4ever
+# ROS 1
 
 ## TODO list
 * Set NVIDIA/Intel GPU as optional
