@@ -1,9 +1,9 @@
-IMAGE_NAME=ros-$DISTRO
+IMAGE=ros-$DISTRO
 TAG=$DISTRO-desktop-full
-CONTAINER_NAME=$IMAGE_NAME
+CONTAINER=$IMAGE
 WORKDIR=$PWD
 COMMAND="source /opt/ros/$DISTRO/setup.bash && cd $WORKDIR && bash"
-COUNT=$(docker ps | grep "$CONTAINER_NAME" | wc -l)
+COUNT=$(docker ps | grep "$CONTAINER" | wc -l)
 
 if [ "$COUNT" -eq 0 ]; then
 
@@ -12,34 +12,34 @@ if [ "$COUNT" -eq 0 ]; then
     DOCKER_NVIDIA="--gpus all"
   fi
 
-  image_exists=$(docker images -q "$IMAGE_NAME")
+  image_exists=$(docker images -q "$IMAGE")
   if [ -z "$image_exists" ]; then
     rocker $ROCKER_NVIDIA --x11 --user --home --nocleanup \
-      --image-name $IMAGE_NAME \
-      --name $CONTAINER_NAME \
+      --image-name $IMAGE \
+      --name $CONTAINER \
       osrf/ros:$TAG "sleep 0"
 
-    docker commit $CONTAINER_NAME $IMAGE_NAME
-    docker container remove $CONTAINER_NAME
+    docker commit $CONTAINER $IMAGE
+    docker container remove $CONTAINER
   fi
   
-  docker create -it -v /home/$USER:/home/$USER  --name $CONTAINER_NAME  \
-    -h $CONTAINER_NAME \
+  docker create -it -v /home/$USER:/home/$USER  --name $CONTAINER  \
+    -h $CONTAINER \
     $DOCKER_NVIDIA -e DISPLAY -e TERM -e QT_X11_NO_MITSHM=1 \
-    -e XAUTHORITY=/tmp/.$IMAGE_NAME.xauth -v /tmp/.$IMAGE_NAME.xauth:/tmp/.$IMAGE_NAME.xauth \
-    -v /tmp/.X11-unix:/tmp/.X11-unix -v /etc/localtime:/etc/localtime:ro $IMAGE_NAME
+    -e XAUTHORITY=/tmp/.$IMAGE.xauth -v /tmp/.$IMAGE.xauth:/tmp/.$IMAGE.xauth \
+    -v /tmp/.X11-unix:/tmp/.X11-unix -v /etc/localtime:/etc/localtime:ro $IMAGE
 
-  docker container start $CONTAINER_NAME
+  docker container start $CONTAINER
 
 fi
 
-docker exec -it "$CONTAINER_NAME" bash -c "$COMMAND"
+docker exec -it "$CONTAINER" bash -c "$COMMAND"
 
-INSTANCES=$(docker exec "$CONTAINER_NAME" bash -c "ps -e | grep bash | wc -l")
+INSTANCES=$(docker exec "$CONTAINER" bash -c "ps -e | grep bash | wc -l")
 
 if [ "$INSTANCES" -eq 2 ]; then
-  docker commit $CONTAINER_NAME $IMAGE_NAME
-  docker container stop $CONTAINER_NAME
-  docker container remove $CONTAINER_NAME
+  docker commit $CONTAINER $IMAGE
+  docker container stop $CONTAINER
+  docker container remove $CONTAINER
 fi
 
