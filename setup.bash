@@ -39,8 +39,7 @@ if [ "$COUNT" -eq 0 ]; then
     -h $CONTAINER \
     $DOCKER_NVIDIA -e DISPLAY -e TERM -e QT_X11_NO_MITSHM=1 \
     -e XAUTHORITY=/tmp/.$IMAGE.xauth -v /tmp/.$IMAGE.xauth:/tmp/.$IMAGE.xauth \
-    -v /tmp/.X11-unix:/tmp/.X11-unix -v /etc/localtime:/etc/localtime:ro $IMAGE \
-    bash -c "$COMMAND"
+    -v /tmp/.X11-unix:/tmp/.X11-unix -v /etc/localtime:/etc/localtime:ro $IMAGE
 
   #echo "Starting container" $CONTAINER
 
@@ -50,17 +49,11 @@ fi
 
 #echo "Executing bash in container" $CONTAINER
 
-docker exec -it "$CONTAINER" bash -c "$COMMAND"
+docker exec -w `pwd` -it "$CONTAINER" /ros_entrypoint.sh bash --rcfile <(echo "source /opt/ros/$DISTRO/setup.bash")
 
 INSTANCES=$(docker exec "$CONTAINER" bash -c "ps -e | grep bash | wc -l")
 
-if [[ "$DISTRO" == "kinetic" || "$DISTRO" == "indigo" ]]; then
-  MIN_INSTANCES=3
-else
-  MIN_INSTANCES=2
-fi
-
-if [ "$INSTANCES" -eq "$MIN_INSTANCES" ]; then
+if [ "$INSTANCES" -eq 2 ]; then
   #echo "Stopping and removing container" $CONTAINER
 
   docker commit $CONTAINER $IMAGE
