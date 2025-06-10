@@ -49,7 +49,13 @@ docker exec -it "$CONTAINER" bash -c "$COMMAND"
 
 INSTANCES=$(docker exec "$CONTAINER" bash -c "ps -e | grep bash | wc -l")
 
-if [ "$INSTANCES" -eq 2 ]; then
+if [[ "$DISTRO" == "kinetic" ]]; then
+  MIN_INSTANCES=3
+else
+  MIN_INSTANCES=2
+fi
+
+if [ "$INSTANCES" -eq "$MIN_INSTANCES" ]; then
   #echo "Stopping and removing container" $CONTAINER
 
   docker commit $CONTAINER $IMAGE
