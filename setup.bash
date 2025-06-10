@@ -12,8 +12,13 @@ if [ "$COUNT" -eq 0 ]; then
     DOCKER_NVIDIA="--gpus all"
   fi
 
+  #echo "Container" $CONTAINER "not running."
+  
   image_exists=$(docker images -q "$IMAGE")
   if [ -z "$image_exists" ]; then
+  
+    #echo "Image" $IMAGE "not found: creating image."
+    
     rocker $ROCKER_NVIDIA --x11 --user --home --nocleanup \
       --image-name $IMAGE \
       --name $CONTAINER \
@@ -23,21 +28,30 @@ if [ "$COUNT" -eq 0 ]; then
     docker container remove $CONTAINER
   fi
   
+  #echo "Creating container" $CONTAINER
+  
   docker create -it -v /home/$USER:/home/$USER  --name $CONTAINER  \
     -h $CONTAINER \
     $DOCKER_NVIDIA -e DISPLAY -e TERM -e QT_X11_NO_MITSHM=1 \
     -e XAUTHORITY=/tmp/.$IMAGE.xauth -v /tmp/.$IMAGE.xauth:/tmp/.$IMAGE.xauth \
-    -v /tmp/.X11-unix:/tmp/.X11-unix -v /etc/localtime:/etc/localtime:ro $IMAGE
+    -v /tmp/.X11-unix:/tmp/.X11-unix -v /etc/localtime:/etc/localtime:ro $IMAGE \
+    bash -c "$COMMAND"
+
+  #echo "Starting container" $CONTAINER
 
   docker container start $CONTAINER
 
 fi
+
+#echo "Executing bash in container" $CONTAINER
 
 docker exec -it "$CONTAINER" bash -c "$COMMAND"
 
 INSTANCES=$(docker exec "$CONTAINER" bash -c "ps -e | grep bash | wc -l")
 
 if [ "$INSTANCES" -eq 2 ]; then
+  #echo "Stopping and removing container" $CONTAINER
+
   docker commit $CONTAINER $IMAGE
   docker container stop $CONTAINER
   docker container remove $CONTAINER
