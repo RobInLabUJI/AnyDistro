@@ -8,8 +8,13 @@ COUNT=$(docker ps | grep "$CONTAINER" | wc -l)
 if [ "$COUNT" -eq 0 ]; then
 
   if nvidia-container-toolkit --version &>/dev/null; then
-    ROCKER_NVIDIA="--nvidia"
-    DOCKER_NVIDIA="--gpus all"
+    if  [[ "$DISTRO" == "indigo" ]]; then
+      unset ROCKER_NVIDIA
+      unset DOCKER_NVIDIA
+    else 
+      ROCKER_NVIDIA="--nvidia"
+      DOCKER_NVIDIA="--gpus all"
+    fi
   fi
 
   #echo "Container" $CONTAINER "not running."
@@ -49,7 +54,7 @@ docker exec -it "$CONTAINER" bash -c "$COMMAND"
 
 INSTANCES=$(docker exec "$CONTAINER" bash -c "ps -e | grep bash | wc -l")
 
-if [[ "$DISTRO" == "kinetic" ]]; then
+if [[ "$DISTRO" == "kinetic" || "$DISTRO" == "indigo" ]]; then
   MIN_INSTANCES=3
 else
   MIN_INSTANCES=2
