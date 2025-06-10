@@ -39,7 +39,7 @@ if [ "$COUNT" -eq 0 ]; then
 
 fi
 
-docker exec -w `pwd` -it "$CONTAINER" /ros_entrypoint.sh bash --rcfile <(echo "source /opt/ros/$DISTRO/setup.bash")
+docker exec -w `pwd` -it "$CONTAINER" /ros_entrypoint.sh bash --rcfile /opt/ros/$DISTRO/setup.bash
 
 INSTANCES=$(docker exec "$CONTAINER" bash -c "ps -e | grep bash | wc -l")
 
