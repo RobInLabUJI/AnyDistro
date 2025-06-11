@@ -5,7 +5,7 @@
 * ~~Check Indigo~~
 * ~~Check Kinetic~~
 * ~~Update image when exiting the last terminal of container~~
-* RViz not working in Indigo
+* RViz not working in Indigo/Jade (Ubuntu 14.04)
 * Test Intel Graphics
 * ~~Set NVIDIA as optional~~
 * ~~Keep current directory~~
