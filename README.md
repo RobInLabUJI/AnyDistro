@@ -20,3 +20,4 @@ cd dock-n-ros && ./install.bash
 * RViz not working in Indigo/Jade (Ubuntu 14.04)
 * Test Intel Graphics
 * Add legacy ROS distros (without graphics)
+* Windows/Mac support
