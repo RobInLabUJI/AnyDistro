@@ -1,5 +1,9 @@
 IMAGE=ros-$DISTRO
-TAG=$DISTRO-desktop-full
+if [[ "$DISTRO" == "foxy" || "$DISTRO" == "galactic" ]]; then
+  TAG="${DISTRO}-desktop"
+else
+  TAG="${DISTRO}-desktop-full"
+fi
 CONTAINER=$IMAGE
 WORKDIR=$PWD
 COMMAND="source /opt/ros/$DISTRO/setup.bash && cd $WORKDIR && bash"
