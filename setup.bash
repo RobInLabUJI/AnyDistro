@@ -6,7 +6,7 @@ else
 fi
 CONTAINER=$IMAGE
 WORKDIR=$PWD
-COMMAND="source /opt/ros/$DISTRO/setup.bash && cd $WORKDIR && bash"
+#COMMAND="source /opt/ros/$DISTRO/setup.bash && cd $WORKDIR && bash"
 COUNT=$(docker ps | grep "$CONTAINER" | wc -l)
 
 if [ "$COUNT" -eq 0 ]; then
