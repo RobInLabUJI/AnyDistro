@@ -19,6 +19,9 @@ if [ "$COUNT" -eq 0 ]; then
       ROCKER_NVIDIA="--nvidia"
       DOCKER_NVIDIA="--gpus all"
     fi
+  else
+    ROCKER_NVIDIA="--devices /dev/dri"
+    DOCKER_NVIDIA="--device=/dev/dri"
   fi
   
   image_exists=$(docker images -q "$IMAGE")
