@@ -16,6 +16,15 @@ git clone https://github.com/RobInLabUJI/AnyDistro.git
 cd AnyDistro && ./install.bash
 ```
 
+## Usage
+Run in a terminal:
+```
+source /opt/ros-docker/<DISTRO>/setup.bash
+```
+* The first execution may take a few minutes because the Docker image of the distribution must be downloaded. 
+* Afterward, you can open as many terminals as you'd like and run the `source` command in each of them. 
+* When you're finished, simply type `exit` in each terminal.
+
 ## TODO list
 * RViz not working in Indigo/Jade (Ubuntu 14.04)
 * ~~Test Intel Graphics~~
