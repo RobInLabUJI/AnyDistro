@@ -27,7 +27,7 @@ source /opt/ros-docker/<DISTRO>/setup.bash
 * When you're finished, simply type `exit` in each terminal.
 
 ## TODO list
-* RViz not working in Indigo/Jade (Ubuntu 14.04)
+* ~~RViz not working in Indigo/Jade (Ubuntu 14.04)~~
 * ~~Test Intel Graphics~~
 * Add legacy ROS distros (without graphics)
 * Windows/Mac support
