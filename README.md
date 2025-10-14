@@ -12,7 +12,7 @@ Tested on Ubuntu 22.04.5 LTS, Docker 28.1.1, OSRF Rocker 0.2.19, nvidia-containe
 ```
 git clone https://github.com/RobInLabUJI/AnyDistro.git
 ```
-2. Run the installation script
+2. [optional] Run the installation script
 ```
 cd AnyDistro && ./install.bash
 ```
@@ -20,8 +20,13 @@ cd AnyDistro && ./install.bash
 ## Usage
 Run in a terminal:
 ```
+source <path-to-AnyDistro>/<DISTRO>/setup.bash
+```
+or (if installed)
+```
 source /opt/ros-docker/<DISTRO>/setup.bash
 ```
+
 * The first execution may take a few minutes because the Docker image of the distribution must be downloaded. 
 * Afterward, you can open as many terminals as you'd like and run the `source` command in each of them. 
 * When you're finished, simply type `exit` in each terminal.
