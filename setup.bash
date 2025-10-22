@@ -1,3 +1,5 @@
+TMP_SCRIPT=$1
+
 IMAGE=ros-$DISTRO
 if [[ "$DISTRO" == "foxy" || "$DISTRO" == "galactic" ]]; then
   TAG="${DISTRO}-desktop"
@@ -47,7 +49,12 @@ if [ "$COUNT" -eq 0 ]; then
 
 fi
 
-docker exec -w `pwd` -it "$CONTAINER" /ros_entrypoint.sh bash --rcfile /opt/ros/$DISTRO/setup.bash
+if [[ -z "$TMP_SCRIPT" ]]; then
+  docker exec -w `pwd` -it "$CONTAINER" /ros_entrypoint.sh bash --rcfile /opt/ros/$DISTRO/setup.bash
+else
+  docker cp "$TMP_SCRIPT" "$CONTAINER":/tmp/inside.bash
+  docker exec -w `pwd` -it "$CONTAINER" /ros_entrypoint.sh bash /tmp/inside.bash --rcfile /opt/ros/$DISTRO/setup.bash
+fi
 
 INSTANCES=$(docker exec "$CONTAINER" bash -c "ps -e | grep bash | wc -l")
 
