@@ -39,7 +39,7 @@ if [ "$COUNT" -eq 0 ]; then
   fi
   
   docker create -it -v /home/$USER:/home/$USER  --name $CONTAINER  \
-    -h $CONTAINER \
+    -h $CONTAINER --network host \
     $DOCKER_NVIDIA -e DISPLAY -e TERM -e QT_X11_NO_MITSHM=1 \
     -e XAUTHORITY=/tmp/.$IMAGE.xauth -v /tmp/.$IMAGE.xauth:/tmp/.$IMAGE.xauth \
     -v /tmp/.X11-unix:/tmp/.X11-unix -v /etc/localtime:/etc/localtime:ro $IMAGE \
